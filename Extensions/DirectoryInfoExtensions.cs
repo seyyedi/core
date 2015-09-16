@@ -24,7 +24,7 @@ namespace Seyyedi
 				)
 			);
 
-		public static IEnumerable<FileInfo> EnumerateFilesRecursive(DirectoryInfo directory)
+		public static IEnumerable<FileInfo> EnumerateFilesRecursive(this DirectoryInfo directory)
 			=> directory
 				.EnumerateFiles()
 				.Concat(directory
