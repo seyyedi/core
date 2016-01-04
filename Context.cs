@@ -104,7 +104,8 @@ namespace Seyyedi
 		public static IEnumerable<T> InitializeServices<T>()
 			where T : class
 			=> Kernel
-				.GetTypesWithBaseClass<T>()
+				.GetTypes()
+				.DerivedFrom<T>()
 				.Select(t => GetService(t) as T);
 
 		public static IEnumerable<object> InitializeServices(Predicate<Type> predicate)
@@ -132,7 +133,7 @@ namespace Seyyedi
 
 				if (!isServiceRegistered)
 				{
-					throw new InvalidOperationException($"Type {type.FullName} is not registered in Kernel");
+					throw new InvalidOperationException($"Type {type.FullName} is not registered in kernel");
 				}
 
 				service = Activator.CreateInstance(type);

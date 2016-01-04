@@ -74,26 +74,7 @@ namespace Seyyedi
 
 		protected virtual void ConfigureLogging()
 		{
-			var hierarchy = (Hierarchy)LogManager.GetRepository();
-
-			var layout = new PatternLayout
-			{
-				ConversionPattern = "%date{ISO8601} %level %logger - %message%newline"
-			};
-
-			layout.ActivateOptions();
-
-			var consoleAppender = new ConsoleAppender
-			{
-				Layout = layout
-			};
-
-			consoleAppender.ActivateOptions();
-
-			hierarchy.Root.AddAppender(consoleAppender);
-
-			hierarchy.Root.Level = Level.Info;
-			hierarchy.Configured = true;
+            Logs.BindConsole();
 		}
 
 		protected virtual T LoadApplication(string[] args)

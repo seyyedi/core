@@ -26,14 +26,33 @@ namespace Seyyedi
 		public static IEnumerable<Type> GetTypes()
 			=> Types.Value;
 
-		public static IEnumerable<Type> GetTypesWithBaseClass<TBaseClass>()
-			where TBaseClass : class
-			=> GetTypes()
-				.Where(t => typeof(TBaseClass).IsAssignableFrom(t));
+		public static IEnumerable<Type> DerivedFrom<TBase>(this IEnumerable<Type> types)
+			where TBase : class
+			=> types
+				.Where(t => typeof(TBase).IsAssignableFrom(t));
 
-		public static IEnumerable<Type> GetTypesWithAttribute<TAttribute>()
+		public static IEnumerable<Type> DerivedFromGeneric(this IEnumerable<Type> types, Type genericBaseType)
+			=> types
+				.Where(t =>
+				{
+					var type = t;
+
+					while (type != null && type != typeof(object))
+					{
+						if (type.IsGenericType && type.GetGenericTypeDefinition() == genericBaseType)
+						{
+							return true;
+						}
+
+						type = type.BaseType;
+					}
+
+					return false;
+				});
+
+		public static IEnumerable<Type> WithAttribute<TAttribute>(this IEnumerable<Type> types)
 			where TAttribute : Attribute
-			=> GetTypes()
+			=> types
 				.Select(t => new
 				{
 					Type = t,
