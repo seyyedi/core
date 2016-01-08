@@ -1,10 +1,10 @@
+using System;
+using System.Text;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System;
-using System.Text;
 
 namespace Seyyedi.Api
 {
@@ -23,11 +23,11 @@ namespace Seyyedi.Api
 		{
 			if (_connection != null)
 			{
-				Log.Warn("Connection to rabbitmq already opened");
+				Log.Warn("RabbitMq already online");
 				return;
 			}
 
-			Log.Info("Opening connection to rabbitmq");
+			Log.Info("Opening connection to RabbitMq");
 
 			try
 			{
@@ -45,6 +45,8 @@ namespace Seyyedi.Api
 
 				_channel.ExchangeDeclare(RabbitMqEnvironment.Current.EventsExchange, "topic", true);
 				_channel.ExchangeDeclare(RabbitMqEnvironment.Current.ResourcesExchange, "direct", true);
+
+				Log.Info("RabbitMq is online");
 			}
 			catch (Exception ex)
 			{
@@ -55,7 +57,7 @@ namespace Seyyedi.Api
 
 		public void Close()
 		{
-			Log.Info("Closing connection to rabbitmq");
+			Log.Info("Closing connection to RabbitMq");
 
 			if (_channel != null)
 			{
@@ -70,6 +72,8 @@ namespace Seyyedi.Api
 				_connection.Dispose();
 				_connection = null;
 			}
+
+			Log.Info("RabbitMq is offline");
 		}
 
 		protected virtual void Dispose(bool disposing)
