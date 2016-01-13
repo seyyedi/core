@@ -21,8 +21,12 @@ namespace Seyyedi.Api
 		public string Password { get; set; }
 
 		public string Namespace { get; set; } = "api";
+
 		public string EventsExchange => $"{Namespace}.events";
-		public string ResourcesExchange => $"{Namespace}.resources";
+		public string RequestsExchange => $"{Namespace}.requests";
+		public string ResponsesExchange => $"{Namespace}.responses";
+		public string RetryResponsesExchange => $"retry:{ResponsesExchange}";
+		public string RetryResponsesQueue => RetryResponsesExchange;
 
 		public static readonly RabbitMqEnvironment Setup = new RabbitMqEnvironment
 		{
